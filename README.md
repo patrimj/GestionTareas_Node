@@ -65,56 +65,79 @@ npx sequelize-cli init
 ```bash
 npx sequelize-cli model:generate --name User --attributes firstName:string,lastName:string,email:string 
 ```
-- Crear ``tablas``
+- Crear y migrar``tablas``
 ```bash
 npx sequelize-cli db:migrate 
 ```
+- Hacer un rollback de las ``tablas``
+```bash
+npx sequelize-cli db:migrate:undo 
+```
 - Crear ``seeders``
 ```bash
-npx sequelize-cli seed:generate --name demo-user 
+npx sequelize-cli seed:generate --name userSeeder
 ```
 - Introducir datos en las ``tablas``
 ```bash
-npx sequelize-cli db:seed:all = 
+npx sequelize-cli db:seed:all 
 ```
 
 ## 2. ESTRUCTURACIÓN DE ARCHIVOS
 > ## app
-> > app.js
+> > ``app.js`` [copiado el archivo ``app.js`` del profesor]
 
-> > server.js
+> > ``server.js`` [copiado en un principio el archivo ``server.js`` del profesor]
 
 > ## config
-> > config.js
+> > ``config.js`` [copiado el archivo ``config.js`` del profesor]
 
 > ## controllers
-> > tarea.controller.js
+> > ``tarea.controller.js``
 
-> > usuario.controller.js
+> > ``usuario.controller.js``
 
 > ## database
-> > ConexionSequelize.js
+> > ``ConexionSequelize.js``
 
-> > connection.js
+> > ``connection.js``
 
-> > tarea.conexion.js
+> > ``tarea.conexion.js``
 
-> > usuario.conexion.js
+> > ``usuario.conexion.js``
 
 > ## factories 
-> > tarea.factory.js
-> > usuario.factory.js
+> > ``tarea.factory.js`` [faker]
+
+> > ``usuario.factory.js`` [faker]
 
 > ## helpers
-> > CustomError.js
-> > db-validators.js 
+> > ``CustomError.js`` [copiado el archivo ``CustomError.js`` del profesor]
+
+> > ``db-validators.js`` [se encuentran los validators personalizados]
 
 > ## middlewares
+> > ``validar-admin.js`` [ para validar si el usuario es admin]
 
-> ## migrations
+> ## migrations y models
 
-> ## models
+```bash
+npx sequelize-cli model:generate --name User --attributes id:integer,nombre:string,email:string,password:string,admin:boolean
+```
+
+- Crea un archivo de tipo `XXXXXXXXXXXXXX-create-user.j` en la carpeta `/migrations` y un archivo `user.js` en la carpeta `/models`
+
+```bash
+npx sequelize-cli model:generate --name Tarea --attributes id:integer,id_usuario:integer,descripcion:string,dificultad:string,horas_previstas:integer,horas_realizadas:integer,porcentaje_realizacion:integer,completada:boolean
+```
+- Crea un archivo de tipo `XXXXXXXXXXXXXX-create-tarea.j` en la carpeta `/migrations` y un archivo `tarea.js` en la carpeta `/models`
+
+> > ``user.js`` [es el modelo que seguira la tabla usuarios]
+
+> > ``tarea.js`` [es el modelo que seguira la tabla tareas]
 
 > ## routes
+> > ``tarea.routes.js``
+
+> > ``usuario.routes.js``
 
 > ## seeders
