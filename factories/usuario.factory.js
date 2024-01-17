@@ -1,5 +1,3 @@
-const faker = require('faker');
-const Persona = require('../../models/Persona');
 const bcrypt = require('bcrypt');
 const { faker, fakerES } = require('@faker-js/faker');
 

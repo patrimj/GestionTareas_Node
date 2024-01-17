@@ -106,9 +106,21 @@ npx sequelize-cli db:seed:all
 > > ``usuario.conexion.js``
 
 > ## factories 
-> > ``tarea.factory.js`` [faker]
+
+> [!NOTE]
+> Las factorias se crean [SIN] comando
+
+> > ``rol.factory.js`` [faker]
+
+> > ``rol_asignado.factory.js`` [faker] 
 
 > > ``usuario.factory.js`` [faker]
+
+> > ``tarea.factory.js`` [faker]
+
+> > ``tarea_asignada.factory.js`` [faker] 
+
+
 
 > ## helpers
 > > ``CustomError.js`` [copiado el archivo ``CustomError.js`` del profesor]
@@ -120,18 +132,29 @@ npx sequelize-cli db:seed:all
 
 > ## migrations y models
 
+> > ``roles.js`` [es el modelo que seguira la tabla roles]
 ```bash
-npx sequelize-cli model:generate --name User --attributes id:integer,nombre:string,email:string,password:string,admin:boolean
+npx sequelize-cli model:generate --name Roles --attributes nombre:string  
 ```
+> > ``rol_asignado.js`` [es el modelo que seguira la tabla rol_asignado]
+```bash
+npx sequelize-cli model:generate --name Rol_Asignado --attributes id_rol:integer,id_usuario:integer 
+```
+> > ``user.js`` [es el modelo que seguira la tabla usuarios]
+```bash
+npx sequelize-cli model:generate --name User --attributes nombre:string,email:string,password:string,admin:boolean
+```
+> [!CAUTION]
+> id:integer > no se pone porque viene por defecto
 
 - Crea un archivo de tipo `XXXXXXXXXXXXXX-create-user.j` en la carpeta `/migrations` y un archivo `user.js` en la carpeta `/models`
 
 ```bash
-npx sequelize-cli model:generate --name Tarea --attributes id:integer,id_usuario:integer,descripcion:string,dificultad:string,horas_previstas:integer,horas_realizadas:integer,porcentaje_realizacion:integer,completada:boolean
+npx sequelize-cli model:generate --name Tarea --attributes id_usuario:integer,descripcion:string,dificultad:string,horas_previstas:integer,horas_realizadas:integer,porcentaje_realizacion:integer,completada:boolean
 ```
 - Crea un archivo de tipo `XXXXXXXXXXXXXX-create-tarea.j` en la carpeta `/migrations` y un archivo `tarea.js` en la carpeta `/models`
 
-> > ``user.js`` [es el modelo que seguira la tabla usuarios]
+
 
 > > ``tarea.js`` [es el modelo que seguira la tabla tareas]
 
@@ -141,3 +164,18 @@ npx sequelize-cli model:generate --name Tarea --attributes id:integer,id_usuario
 > > ``usuario.routes.js``
 
 > ## seeders
+
+> [!NOTE]
+> Useful information that users should know, even when skimming content.
+
+> [!TIP]
+> Helpful advice for doing things better or more easily.
+
+> [!IMPORTANT]
+> Key information users need to know to achieve their goal.
+
+> [!WARNING]
+> Urgent info that needs immediate user attention to avoid problems.
+
+> [!CAUTION]
+> Advises about risks or negative outcomes of certain actions.

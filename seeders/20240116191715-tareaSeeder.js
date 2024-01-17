@@ -1,4 +1,5 @@
 'use strict';
+const { genTareas } = require('../factories/tarea.factory');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -12,6 +13,8 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
+   const tareas = await genTareas(4);
+   await queryInterface.bulkInsert('tareas', tareas, {}); // bulkInsert es una funcion de sequelize que te permite insertar varios registros a la vez
   },
 
   async down (queryInterface, Sequelize) {
@@ -21,5 +24,6 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
+    await queryInterface.bulkDelete('tareas', null, {});
   }
 };
