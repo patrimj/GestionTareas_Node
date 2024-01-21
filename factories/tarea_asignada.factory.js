@@ -1,4 +1,4 @@
-const { Tarea_Asignada, Tarea, User } = require('..');
+const { Tarea_Asignada, Tarea, User } = require('../models');
 
 const genTareasAsignadas = async (ctos = 1) => { 
     let tareasAsignadasGen = []

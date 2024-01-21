@@ -6,9 +6,10 @@ const Sequelize = require('sequelize');
 const process = require('process');
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
-const config = require(path.join(__dirname, './config/config.js'))[env];
-const db = {};
-const Server = require('./app/server');
+const config = require(path.join(__dirname, '../config/config.js'))[env];
+const db = {}
+const Server = require('../app/server');
+
 
 const server = new Server();
 server.listen();
@@ -44,4 +45,5 @@ Object.keys(db).forEach(modelName => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-module.exports = db;
+module.exports = db
+

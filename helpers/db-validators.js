@@ -15,7 +15,6 @@ return new Promise((resolve, reject) => {
         reject(new Error('DNI existe'));
       });
   });
- };
 
 const edadCorrecta = async(edad)=>{
   if (edad <0){

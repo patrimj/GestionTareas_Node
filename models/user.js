@@ -1,4 +1,6 @@
 'use strict';
+const { Sequelize } = require('sequelize');
+
 const {
   Model
 } = require('sequelize');
@@ -24,6 +26,8 @@ module.exports = (sequelize, DataTypes) => {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true, 
+      autoIncrement: true,
+      unique: true,
     },
     nombre: DataTypes.STRING,
     email: DataTypes.STRING,

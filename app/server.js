@@ -17,6 +17,7 @@ class Server {
     middlewares() {
         //En esta sección cargamos una serie de herramientas necesarias para todas las rutas.
         //Para los middlewares como estamos acostumbrados a usarlos en Laravel ver userRoutes y userMiddlewares.
+        
         //Para cors
         this.app.use(cors());
         //Para poder recibir la información que venga del body y parsearla de JSON, necesitamos importar lo siguiente.
@@ -29,6 +30,7 @@ class Server {
         //En esta sección cargamos las rutas de la aplicación.
         //Para las rutas ver userRoutes y userMiddlewares.
         this.app.use(this.usuariosPath, require('../routes/user.routes'));
+        //this.app.use(this.usuariosPath, require('../routes/tarea.routes'));
         
     }
 

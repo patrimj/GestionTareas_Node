@@ -1,98 +1,104 @@
-const {response,request} = require('express');
-const ConexionUsuario = require('../database/usuarioConexion');
+const { response, request } = require('express');
+const ConexionUsuario = require('../database/usuario.conexion');
 
-const getUsuarios =  (req, res = response) => {
+//LOGIN
+const login = (req = request, res = response) => {
     const conx = new ConexionUsuario();
 
-    conx.getUsuarios()    
-        .then( msg => {
-            console.log('Listado correcto!');
-            res.status(200).json(msg);
-        })
-        .catch( err => {
-            console.log('No hay registros');
-            res.status(200).json({'msg':'No se han encontrado registros'});
-        });
-}
-
-const getUsuarioId =  (req, res = response) => {
-    const conx = new ConexionUsuario();
-    
-    conx.getUsuarioId(req.params.id)    
-        .then( msg => {
-            console.log('Listado correcto!');
-            res.status(200).json(msg);
-        })
-        .catch( err => {
-            console.log('No hay registro!');
-            res.status(200).json({'msg':'No se ha encontrado el registro'});
-        });
-}
-
-const registrarUsuario =  (req = request, res = response) => {
-    const conx = new ConexionUsuario();
-    
-    conx.registrarUsuario(req.body.nombre, req.body.email, req.body.password)    
-        .then( msg => {
-            console.log('Insertado correctamente!');
+    conx.login(req.body.email, req.body.password)
+        .then(msg => {
+            console.log('Usuario iniciado');
             res.status(201).json(msg);
         })
-        .catch( err => {
-            console.log('Fallo en el registro!');
-            res.status(203).json(err);
-        });
-}
-
-
-const login =  (req = request, res = response) => {
-    const conx = new ConexionUsuario();
-
-    conx.login (req.body.email, req.body.password)
-        .then (msg => {
-            console.log ('Usuario iniciado');
-            res.status(201).json(msg);
-        })
-        .catch ( err => {
+        .catch(err => {
             console.log('Fallo en el inicio de sesión');
             console.log(err);
             res.status(203).json(err);
         })
 }
 
-const borrarUsuario =  (req, res = response) => {
+// REGISTRARSE
+const registro = (req, res = response) => {
     const conx = new ConexionUsuario();
-    
-    conx.borrarUsuario(req.params.id)    
-        .then( msg => {
-            console.log('Borrado correctamente!');
-            res.status(202).json(msg);
+
+    conx.registro(req.body)
+        .then(msg => {
+            console.log('Listado correcto!');
+            res.status(200).json(msg);
         })
-        .catch( err => {
-            console.log('Fallo en el borrado!');
-            res.status(203).json(err);
+        .catch(err => {
+            console.log('No hay registros');
+            res.status(200).json({ 'msg': 'No se han encontrado registros' });
         });
 }
 
-const modificarUsuario =  (req, res = response) => {
+// CAMBIAR PASSWORD
+const cambiarPassword = (req, res = response) => {
     const conx = new ConexionUsuario();
-    
-    conx.modificarUsuario(req.body.nombre, req.body.email, req.body.password)    
-        .then( msg => {
-            console.log('Modificado correctamente!');
-            res.status(202).json(msg);
+
+    conx.cambiarPassword(req.params.email, req.body.password)
+        .then(msg => {
+            console.log('Listado correcto!');
+            res.status(200).json(msg);
         })
-        .catch( err => {
-            console.log('Fallo en la modificación!');
-            res.status(203).json(err);
+        .catch(err => {
+            console.log('No hay registros');
+            res.status(200).json({ 'msg': 'No se han encontrado registros' });
         });
 }
 
+//ALTA USUARIO
+const altaUsuario = (req, res = response) => {
+    const conx = new ConexionUsuario();
+
+    conx.altaUsuario(req.body)
+        .then(msg => {
+            console.log('Listado correcto!');
+            res.status(200).json(msg);
+        })
+        .catch(err => {
+            console.log('No hay registros');
+            res.status(200).json({ 'msg': 'No se han encontrado registros' });
+        });
+}
+
+//BAJA USUARIO
+
+const bajaUsuario = (req, res = response) => {  
+    const conx = new ConexionUsuario();
+
+    conx.bajaUsuario(req.params.id)
+        .then(msg => {
+            console.log('Listado correcto!');
+            res.status(200).json(msg);
+        })
+        .catch(err => {
+            console.log('No hay registros');
+            res.status(200).json({ 'msg': 'No se han encontrado registros' });
+        });
+}
+
+//MODIFICAR USUARIO
+
+const modificarUsuario = (req, res = response) => {
+    const conx = new ConexionUsuario();
+
+    conx.modificarUsuario(req.params.id, req.body)
+        .then(msg => {
+            console.log('Listado correcto!');
+            res.status(200).json(msg);
+        })
+        .catch(err => {
+            console.log('No hay registros');
+            res.status(200).json({ 'msg': 'No se han encontrado registros' });
+        });
+}
 
 module.exports = {
-    getUsuarios,
-    getUsuarioId,
-    registrarUsuario,
-    borrarUsuario,
-    modificarUsuario,
-    login
+    login,
+    registro,
+    cambiarPassword,
+    altaUsuario,
+    bajaUsuario,
+    modificarUsuario
 }
