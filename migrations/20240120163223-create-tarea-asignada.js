@@ -2,30 +2,18 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Tareas', {
+    await queryInterface.createTable('Tarea_Asignadas', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      descripcion: {
-        type: Sequelize.STRING
-      },
-      dificultad: {
-        type: Sequelize.STRING
-      },
-      horas_previstas: {
+      id_tarea: {
         type: Sequelize.INTEGER
       },
-      horas_realizadas: {
+      id_usuario: {
         type: Sequelize.INTEGER
-      },
-      porcentaje_realizacion: {
-        type: Sequelize.INTEGER
-      },
-      completada: {
-        type: Sequelize.BOOLEAN
       },
       createdAt: {
         allowNull: false,
@@ -38,6 +26,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Tareas');
+    await queryInterface.dropTable('Tarea_Asignadas');
   }
 };

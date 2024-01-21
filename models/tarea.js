@@ -10,11 +10,17 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
+      this.hasMany(models.Tarea_Asignada, {
+        foreignKey: 'id_tarea',
+        as: 'tareasAsignadas'
+      })
     }
   }
   Tarea.init({
-    id: DataTypes.INTEGER,
-    id_usuario: DataTypes.INTEGER,
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+    },
     descripcion: DataTypes.STRING,
     dificultad: DataTypes.STRING,
     horas_previstas: DataTypes.INTEGER,

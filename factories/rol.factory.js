@@ -1,12 +1,14 @@
-
-const genRoles = async (ctos = 1) => { // ctos = cantidad de usuarios a generar
+const genRoles = async () => {
 
     let rolGen = []
-    for(let i = 1; i <= ctos; i++) {
-        const nombres = ['Admin', 'Programador'];
+    const nombres = ['Admin', 'Programador'];
+
+    for(let i = 0; i < nombres.length; i++) {
         let u = 
             {
-                nombre: nombres[Math.floor(Math.random() * nombres.length)],
+                nombre: nombres[i],
+                createdAt: new Date(),
+                updatedAt: new Date()
             }
             rolGen.push(u)
     }

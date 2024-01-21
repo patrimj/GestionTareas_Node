@@ -26,7 +26,9 @@ class Server {
     }
 
     routes(){
-        this.app.use(this.usuariosPath , require('../routes/usuarioRoutes'));
+        //En esta sección cargamos las rutas de la aplicación.
+        //Para las rutas ver userRoutes y userMiddlewares.
+        this.app.use(this.usuariosPath, require('../routes/user.routes'));
         
     }
 

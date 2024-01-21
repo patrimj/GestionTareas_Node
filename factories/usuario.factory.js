@@ -11,7 +11,6 @@ const genUsers = async (ctos = 1) => { // ctos = cantidad de usuarios a generar
                 nombre: faker.person.firstName(),
                 email: fakerES.internet.email(),
                 password: password,
-                admin: 0,
                 createdAt: new Date(),
                 updatedAt: new Date()
             }

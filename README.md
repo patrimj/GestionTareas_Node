@@ -68,6 +68,11 @@ npx sequelize-cli model:generate --name User --attributes firstName:string,lastN
 - Crear y migrar``tablas``
 ```bash
 npx sequelize-cli db:migrate 
+npx sequelize-cli db:migrate --to 10240117093834-create-roles.js
+npx sequelize-cli db:migrate --to 20240116185326-create-user.js
+npx sequelize-cli db:migrate --to 20240116185327-create-rol-asignado.js
+npx sequelize-cli db:migrate --to 20240116185423-create-tarea.js
+npx sequelize-cli db:migrate --to 20240120163223-create-tarea-asignada.js
 ```
 - Hacer un rollback de las ``tablas``
 ```bash
@@ -79,7 +84,11 @@ npx sequelize-cli seed:generate --name userSeeder
 ```
 - Introducir datos en las ``tablas``
 ```bash
-npx sequelize-cli db:seed:all 
+npx sequelize-cli db:seed --seed 20240120180629-rolSeeder.js
+npx sequelize-cli db:seed --seed 20240116191709-userSeeder.js  
+npx sequelize-cli db:seed --seed 20240116191710-rol_asignadoSeeder.js
+npx sequelize-cli db:seed --seed 20240116191715-tareaSeeder.js
+npx sequelize-cli db:seed --seed 20240120180650-tarea_asignadaSeeder.js
 ```
 
 ## 2. ESTRUCTURACIÓN DE ARCHIVOS
@@ -144,24 +153,77 @@ npx sequelize-cli model:generate --name Rol_Asignado --attributes id_rol:integer
 ```bash
 npx sequelize-cli model:generate --name User --attributes nombre:string,email:string,password:string,admin:boolean
 ```
+> > ``tarea.js`` [es el modelo que seguira la tabla tareas]
+```bash
+npx sequelize-cli model:generate --name Tarea --attributes descripcion:string,dificultad:string,horas_previstas:integer,horas_realizadas:integer,porcentaje_realizacion:integer,completada:boolean
+```
+> > ``tarea_asignada.js`` [es el modelo que seguira la tabla tarea_asignada]
+```bash
+npx sequelize-cli model:generate --name Tarea_Asignada --attributes id_tarea:integer,id_usuario:integer
+```
 > [!CAUTION]
 > id:integer > no se pone porque viene por defecto
 
-- Crea un archivo de tipo `XXXXXXXXXXXXXX-create-user.j` en la carpeta `/migrations` y un archivo `user.js` en la carpeta `/models`
-
-```bash
-npx sequelize-cli model:generate --name Tarea --attributes id_usuario:integer,descripcion:string,dificultad:string,horas_previstas:integer,horas_realizadas:integer,porcentaje_realizacion:integer,completada:boolean
-```
-- Crea un archivo de tipo `XXXXXXXXXXXXXX-create-tarea.j` en la carpeta `/migrations` y un archivo `tarea.js` en la carpeta `/models`
-
-
-
-> > ``tarea.js`` [es el modelo que seguira la tabla tareas]
+> [!IMPORTANT]
+>Todos estos comandos crearán un archivo de tipo `XXXXXXXXXXXXXX-create-user.j` en la carpeta `/migrations` y un archivo `user.js` en la carpeta `/models`
 
 > ## routes
 > > ``tarea.routes.js``
 
-> > ``usuario.routes.js``
+> > ``user.routes.js``
+
+INICIAR SESIÓN [TODOS LOS USUARIOS]
+
+POST http://localhost:9090/api/login
+```
+{
+  "email" : "patricia@correo.com",
+  "password": "admin123"
+}
+```
+REGISTRARSE [TODOS LOS USUARIOS]
+
+POST http://localhost:9090/api/registrarse
+```
+{
+  "nombre" : "Patricia",
+  "email" : "patricia@correo.com",
+  "password": "admin123"
+}
+```
+CAMBIAR CONTRASEÑA [TODOS LOS USUARIOS]
+
+PUT http://localhost:9090/api/perfil/password/:email
+```
+{
+  "password": "admin123"
+}
+```
+DAR DE ALTA USUARIO [ADMIN]
+
+POST http://localhost:9090/api/usuario/alta
+```
+{
+  "nombre" : "Patricia",
+  "email" : "patricia@correo.com",
+  "password": "admin123"
+}
+```
+BORRAR USUARIO [ADMIN]
+
+DELETE http://localhost:9090/api/usuario/baja/:id
+
+MODIFICAR USUARIO [ADMIN]
+
+PUT http://localhost:9090/api/usuario/modificar/:id
+```
+{
+  "nombre" : "Patricia",
+  "email" : "patricia@correo.com",
+  "password": "admin123"
+}
+```
+
 
 > ## seeders
 
