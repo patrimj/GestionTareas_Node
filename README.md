@@ -1,5 +1,14 @@
 # EJERCICIO RESUMEN NODEJS
+---
 
+## ÍNDICE
+[1. COMANDOS UTILIZADOS](#1-comandos-utilizados)
+
+[2. ESTRUCTURA DE ARCHIVOS](#2-estructuración-de-archivos)
+
+[3. MANUAL DE USO DE LA API](#3-manual-de-uso-de-la-api)
+
+---
 ## 1. COMANDOS UTILIZADOS
 - Crea el package.json e ``inicializa el proyecto``
 ```bash
@@ -94,6 +103,7 @@ npx sequelize-cli db:seed --seed 20240121203419-rolAsigSeeder.js
 npx sequelize-cli db:seed --seed 20240121203428-tareaSeeder.js
 npx sequelize-cli db:seed --seed 20240121203435-tareaAsigSeeder.js
 ```
+---
 
 ## 2. ESTRUCTURACIÓN DE ARCHIVOS
 > ## app
@@ -103,6 +113,33 @@ npx sequelize-cli db:seed --seed 20240121203435-tareaAsigSeeder.js
 
 > ## config
 > > ``config.js`` [copiado el archivo ``config.js`` del profesor]
+```bash
+require('dotenv').config();
+
+module.exports ={
+  "development": {
+    "username": process.env.DB_USER,
+    "password": process.env.DB_PASSWORD,
+    "database": process.env.DB_DEV,
+    "host": process.env.HOST,
+    "dialect": process.env.DB_DIALECT
+  },
+  "test": {
+    "username": process.env.DB_USER,
+    "password": process.env.DB_PASSWORD,
+    "database": process.env.DB_TEST,
+    "host": process.env.HOST,
+    "dialect": process.env.DB_DIALECT
+  },
+  "production": {
+    "username": process.env.DB_USER,
+    "password": process.env.DB_PASSWORD,
+    "database": process.env.DB_PROD,
+    "host": process.env.HOST,
+    "dialect": process.env.DB_DIALECT
+  }
+}
+```
 
 > ## controllers
 > > ``tarea.controller.js``
@@ -156,11 +193,11 @@ module.exports ={
     generarJWT
 }
 ```
-*** en ``env`` se encuentra la clave secreta para generar el token ***
+*** en ``.env`` se encuentra la clave secreta para generar el ``token`` ***
 ```bash
 SECRETORPRIVATEKEY=eST0EsmiPiblic@key
 ```
-*** en ``controllers`` se encuentra la función para generar el token ***
+*** en ``controllers`` pondriamos una función para generar el token ***
 ```javascript
 const { generarJWT } = require('../helpers/jwt');
 
@@ -195,6 +232,7 @@ const login =  (req, res = response) => {
 
 > ## middlewares
 > > ``validar-admin.js`` [ para validar si el usuario es admin]
+
 > > ``validarJWT.js`` [ para validar el token]
 ```javascript
 const jwt = require('jsonwebtoken');
@@ -264,62 +302,9 @@ npx sequelize-cli model:generate --name Tarea_Asignada --attributes id_tarea:int
 >Todos estos comandos crearán un archivo de tipo `XXXXXXXXXXXXXX-create-user.j` en la carpeta `/migrations` y un archivo `user.js` en la carpeta `/models`
 
 > ## routes
-> > ``tarea.routes.js``
+> > ``tareaRoutes.js``
 
-> > ``user.routes.js``
-
-INICIAR SESIÓN [TODOS LOS USUARIOS]
-
-POST http://localhost:9090/api/login
-```
-{
-  "email" : "patricia@correo.com",
-  "password": "admin123"
-}
-```
-REGISTRARSE [TODOS LOS USUARIOS]
-
-POST http://localhost:9090/api/registrarse
-```
-{
-  "nombre" : "Patricia",
-  "email" : "patricia@correo.com",
-  "password": "admin123"
-}
-```
-CAMBIAR CONTRASEÑA [TODOS LOS USUARIOS]
-
-PUT http://localhost:9090/api/perfil/password/:email
-```
-{
-  "password": "admin123"
-}
-```
-DAR DE ALTA USUARIO [ADMIN]
-
-POST http://localhost:9090/api/usuario/alta
-```
-{
-  "nombre" : "Patricia",
-  "email" : "patricia@correo.com",
-  "password": "admin123"
-}
-```
-BORRAR USUARIO [ADMIN]
-
-DELETE http://localhost:9090/api/usuario/baja/:id
-
-MODIFICAR USUARIO [ADMIN]
-
-PUT http://localhost:9090/api/usuario/modificar/:id
-```
-{
-  "nombre" : "Patricia",
-  "email" : "patricia@correo.com",
-  "password": "admin123"
-}
-```
-
+> > ``usuarioRoutes.js``
 
 > ## seeders
 > > ```20240121203409-rolSeeder.js```
@@ -342,18 +327,286 @@ npx sequelize-cli db:seed --seed 20240121203428-tareaSeeder.js
 ```bash
 npx sequelize-cli db:seed --seed 20240121203435-tareaAsigSeeder.js
 ```
+> ## .env
+```bash
+PORT=9090
 
-> [!NOTE]
-> Useful information that users should know, even when skimming content.
+DB_HOST="localhost"
+DB_USER="root"
+DB_PASSWORD=""
 
-> [!TIP]
-> Helpful advice for doing things better or more easily.
+DB_DEV="tareaMigSeedNode_dev"
+DB_PROD="tareaMigSeedNode_prod"
+DB_TEST="tareaMigSeedNode_test"
 
-> [!IMPORTANT]
-> Key information users need to know to achieve their goal.
+DB_DIALECT="mysql"
+DB_HOST="localhost"
+DB_PORT=3306
+DB_MAXCONNECTIONS=5
 
-> [!WARNING]
-> Urgent info that needs immediate user attention to avoid problems.
+SECRETORPRIVATEKEY=eST0EsmiPiblic@key
+```
+---
+## 3. MANUAL DE USO DE LA API
 
-> [!CAUTION]
-> Advises about risks or negative outcomes of certain actions.
+## RUTAS USUARIOS
+
+---
+#### Registrar usuario
+
+- URL: `http://localhost:9090/api/registrarse`
+- Método: `POST`
+- Datos requeridos:
+  - `nombre`: Nombre del usuario (string, requerido)
+  - `email`: Email del usuario (string, requerido, único)
+  - `password`: Contraseña del usuario (string, requerido)
+
+##### Ejemplo de solicitud para registrar usuario
+```json
+{
+  "nombre" : "Patricia",
+  "email" : "patricia@correo.com",
+  "password": "admin123"
+}
+```
+---
+#### Iniciar sesión
+
+- URL: `http://localhost:9090/api/login`
+- Método: `POST`
+- Datos requeridos:
+  - `email`: Email del usuario (string, requerido)
+  - `password`: Contraseña del usuario (string, requerido)
+- Datos de respuesta:
+  - `token`: Token de autenticación (string)
+  
+##### Ejemplo de solicitud para iniciar sesión
+```json
+{
+  "email" : "patricia@correo.com",
+  "password": "admin123"
+}
+```
+- El token deberá ser enviado en el header de las peticiones que lo requieran, con el nombre `x-token`.
+---
+
+#### Cambiar contraseña
+
+- URL: `http://localhost:9090/api/perfil/password/:email`
+- Método: `PUT`
+- Datos requeridos:
+  - `password`: Contraseña del usuario (string, requerido)
+  - `token`: Token de autenticación (string)
+- Parámetros de ruta:
+  - `email`: Email del usuario (string, requerido)
+
+##### Ejemplo de solicitud para cambiar contraseña
+```json
+{
+  "password": "admin123"
+}
+```
+---
+## RUTAS PROGRAMADORES
+---
+#### LISTAR TAREAS LIBRES
+
+- URL: `http://localhost:9090/api/tareas/libres`
+- Método: `GET`
+- Datos requeridos:
+  - `token`: Token de autenticación (string)
+---
+#### ASIGNAR TAREA
+
+- URL: `http://localhost:9090/api/tarea/asignar/:id`
+- Método: `PUT`
+- Parámetros de ruta:
+  - `id`: ID de la tarea (integer, requerido)
+- Datos requeridos:
+  - `token`: Token de autenticación (string)
+---
+#### QUITARSE TAREA
+
+- URL: `http://localhost:9090/api/tarea/desasignar/:id`
+- Método: `PUT`
+- Parámetros de ruta:
+  - `id`: ID de la tarea (integer, requerido)
+- Datos requeridos:
+  - `token`: Token de autenticación (string)
+---
+#### LISTAR TAREAS ASIGNADAS
+
+- URL: `http://localhost:9090/api/tareas/asignadas`
+- Método: `GET`
+- Datos requeridos:
+  - `token`: Token de autenticación (string)
+---
+#### CONSULTAR TAREA ASIGNADA
+
+- URL: `http://localhost:9090/api/tarea/asignada/:id`
+- Método: `GET`
+- Parámetros de ruta:
+  - `id`: ID de la tarea (integer, requerido)
+- Datos requeridos:
+  - `token`: Token de autenticación (string)
+---
+#### LISTAR TODAS LAS TAREAS
+
+- URL: `http://localhost:9090/api/tareas`
+- Método: `GET`
+- Datos requeridos:
+  - `token`: Token de autenticación (string)
+---
+## RUTAS ADMINISTRADORES
+---
+#### Dar de alta usuario
+
+- URL: `http://localhost:9090/api/usuario/alta`
+- Método: `POST`
+- Datos requeridos:
+  - `nombre`: Nombre del usuario (string, requerido)
+  - `email`: Email del usuario (string, requerido, único)
+  - `password`: Contraseña del usuario (string, requerido)
+  - `token`: Token de autenticación (string)
+
+##### Ejemplo de solicitud para dar de alta usuario
+```json
+{
+  "nombre" : "Patricia",
+  "email" : "patricia@correo.com",
+  "password": "admin123"
+}
+```
+---
+#### Dar de baja usuario
+
+- URL: `http://localhost:9090/api/usuario/baja/:id`
+- Método: `DELETE`
+- Parámetros de ruta:
+  - `id`: ID del usuario (integer, requerido)
+- Datos requeridos:
+  - `token`: Token de autenticación (string)
+---
+#### Modificar usuario
+
+- URL: `http://localhost:9090/api/usuario/modificar/:id`
+- Método: `PUT`
+- Parámetros de ruta:
+  - `id`: ID del usuario (integer, requerido)
+- Datos requeridos:
+  - `nombre`: Nombre del usuario (string, requerido)
+  - `email`: Email del usuario (string, requerido, único)
+  - `password`: Contraseña del usuario (string, requerido)
+  - `token`: Token de autenticación (string)
+
+##### Ejemplo de solicitud para modificar usuario
+```json
+{
+  "nombre" : "Patricia",
+  "email" : "patricia@correo.com",
+  "password": "admin123"
+}
+```
+---
+#### Crear tarea
+
+- URL: `http://localhost:9090/api/tarea/crear`
+- Método: `POST`
+- Datos requeridos:
+  - `descripcion`: Descripción de la tarea (string, requerido)
+  - `dificultad`: Dificultad de la tarea (string, requerido)
+  - `horas_previstas`: Horas previstas de la tarea (integer, requerido)
+  - `horas_realizadas`: Horas realizadas de la tarea (integer, requerido)
+  - `porcentaje_realizacion`: Porcentaje de realización de la tarea (integer, requerido)
+  - `completada`: Completada de la tarea (boolean, requerido)
+  - `token`: Token de autenticación (string)
+
+##### Ejemplo de solicitud para crear tarea
+```json
+{
+  "descripcion" : "Tarea 1",
+  "dificultad" : "L",
+  "horas_previstas": 10,
+  "horas_realizadas": 5,
+  "porcentaje_realizacion": 50,
+  "completada": false
+}
+```
+---
+#### Modificar tarea
+
+- URL: `http://localhost:9090/api/tarea/modificar/:id`
+- Método: `PUT`
+- Parámetros de ruta:
+  - `id`: ID de la tarea (integer, requerido)
+  - `token`: Token de autenticación (string)
+- Datos requeridos:
+  - `descripcion`: Descripción de la tarea (string, requerido)
+  - `dificultad`: Dificultad de la tarea (string, requerido)
+  - `horas_previstas`: Horas previstas de la tarea (integer, requerido)
+  - `horas_realizadas`: Horas realizadas de la tarea (integer, requerido)
+  - `porcentaje_realizacion`: Porcentaje de realización de la tarea (integer, requerido)
+  - `completada`: Completada de la tarea (boolean, requerido)
+  - `token`: Token de autenticación (string)
+
+##### Ejemplo de solicitud para modificar tarea
+```json
+{
+  "descripcion" : "Tarea 1",
+  "dificultad" : "S",
+  "horas_previstas": 10,
+  "horas_realizadas": 5,
+  "porcentaje_realizacion": 50,
+  "completada": false
+}
+```
+---
+#### Eliminar tarea
+
+- URL: `http://localhost:9090/api/tarea/eliminar/:id`
+- Método: `DELETE`
+- Parámetros de ruta:
+  - `id`: ID de la tarea (integer, requerido)
+- Datos requeridos:
+  - `token`: Token de autenticación (string)
+---
+#### Asignar tarea a usuario
+
+- URL: `http://localhost:9090/api/tarea/asignar/:id/:id_usuario`
+- Método: `PUT`
+- Parámetros de ruta:
+  - `id`: ID de la tarea (integer, requerido)
+  - `id_usuario`: ID del usuario (integer, requerido)
+- Datos requeridos:
+  - `token`: Token de autenticación (string)
+---
+#### Ver tareas programador
+
+- URL: `http://localhost:9090/api/tareas/programador/:id_usuario`
+- Método: `GET`
+- Parámetros de ruta:
+  - `id_usuario`: ID del usuario (integer, requerido)
+- Datos requeridos:
+  - `token`: Token de autenticación (string)
+---
+#### Ver tareas realizadas
+
+- URL: `http://localhost:9090/api/tareas/realizadas`
+- Método: `GET`
+- Datos requeridos:
+  - `token`: Token de autenticación (string)
+---
+#### Ver tareas pendientes
+
+- URL: `http://localhost:9090/api/tareas/pendientes`
+- Método: `GET`
+- Datos requeridos:
+  - `token`: Token de autenticación (string)
+---
+#### Ver ranking de tareas
+
+- URL: `http://localhost:9090/api/ranking`
+- Método: `GET`
+- Datos requeridos:
+  - `token`: Token de autenticación (string)
+---
