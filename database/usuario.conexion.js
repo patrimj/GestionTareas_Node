@@ -1,13 +1,8 @@
 const mysql = require('mysql2');
 const Conexion = require('./ConexionSequelize');
 const { Sequelize, Op } = require('sequelize'); // Op es para los operadores de sequelize
+const models = require('../models/index.js'); //Esto tiene acceso a todos los modelos., lo genera solo el sequelize-cli
 
-let User;
-if (typeof require !== 'undefined') {
- const { Sequelize, DataTypes } = require('sequelize');
- const sequelize = new Sequelize('sqlite::memory:');
- User = require('../models/user.js')(sequelize, DataTypes);
-}
 
 class UsuarioConexion{
     
@@ -27,7 +22,7 @@ class UsuarioConexion{
     login = async (email, password) => {
         let resultado = [];
         this.conectar();
-        resultado = await User.findOne({
+        resultado = await models.User.findOne({
             where: {
                 email: email,
                 password: password
@@ -45,7 +40,7 @@ class UsuarioConexion{
         let resultado = 0;
         this.conectar();
         try {
-            const usuarioNuevo = await User.create(body); // solo crea los campos que le digo en el body
+            const usuarioNuevo = await  models.User.create(body); // solo crea los campos que le digo en el body
             resultado = 1; 
         } catch (error) {
             if (error instanceof Sequelize.UniqueConstraintError) {
@@ -63,7 +58,7 @@ class UsuarioConexion{
     // CAMBIAR PASSWORD
     cambiarPassword = async (email, password) => {
         this.conectar();
-        let resultado = await User.findOne({
+        let resultado = await  models.User.findOne({
             where: {
                 email: email
             }
@@ -82,7 +77,7 @@ class UsuarioConexion{
         let resultado = 0;
         this.conectar();
         try {
-            const usuarioNuevo = await User.create(body); 
+            const usuarioNuevo = await  models.User.create(body); 
             resultado = 1; 
         } catch (error) {
             if (error instanceof Sequelize.UniqueConstraintError) {
@@ -100,7 +95,7 @@ class UsuarioConexion{
     // BAJA USUARIO
     bajaUsuario = async (id) => {
         this.conectar();
-        let resultado = await User.findByPk(id);
+        let resultado = await  models.User.findByPk(id);
         if (!resultado) {
             this.desconectar();
             throw error;
@@ -113,7 +108,7 @@ class UsuarioConexion{
     // MODIFICAR USUARIO
     modificarUsuario = async (id, body) => {
         this.conectar();
-        let resultado = await User.findByPk(id);
+        let resultado = await  models.User.findByPk(id);
         if (!resultado) {
             this.desconectar();
             throw error;

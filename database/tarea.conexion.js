@@ -1,4 +1,3 @@
-const mysql = require('mysql2');
 const Conexion = require('./ConexionSequelize');
 const { Sequelize, Op } = require('sequelize'); // Op es para los operadores de sequelize
 
